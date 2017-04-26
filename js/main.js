@@ -38,10 +38,10 @@ var model = {
 			state: this.timerStateIsWork ? 'work' : 'rest',
 			remain: this.timerStateIsWork ? (this.workLength - this.filledLength) : (this.restLength - this.filledLength),
 			wStart: this.timerStateIsWork ? this.dateStart.getTime() : (this.dateStart.getTime() + this.restLength),
-			wFilled: this.timerStateIsWork ? this.filledLength : 0,
+			wFilled: this.timerStateIsWork ? (this.filledLength > this.workLength ? this.workLength : this.filledLength) : 0,
 			wLength: this.workLength,
 			rStart: this.timerStateIsWork ? (this.dateStart.getTime() + this.workLength) : this.dateStart.getTime(),
-			rFilled: this.timerStateIsWork ? 0 : this.filledLength,
+			rFilled: this.timerStateIsWork ? 0 : (this.filledLength > this.restLength ? this.restLength : this.filledLength),
 			rLength: this.restLength
 		};
 	},
@@ -248,8 +248,7 @@ var controller = {
 				}
 			}
 		}
-		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled > timer.wLength ? timer.wLength : timer.wFilled,
-			timer.rStart, timer.rLength, timer.rFilled > timer.rLength ? timer.rLength : timer.rFilled);
+		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 	addStartingZero: function(val) {
 		return val > 9 ? val : '0' + val;
@@ -358,8 +357,7 @@ var controller = {
 	handleRangesDrag: function(wVal, rVal) {
 		var timer = model.setSetsLength(wVal * 60 * 1000, rVal * 60 * 1000);
 		view.showSetsTime(Math.round(timer.wLength/60/1000), Math.round(timer.rLength/60/1000));
-		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled > timer.wLength ? timer.wLength : timer.wFilled,
-			timer.rStart, timer.rLength, timer.rFilled > timer.rLength ? timer.rLength : timer.rFilled);
+		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 };
 
