@@ -15,7 +15,8 @@ var model = {
 			this.dateStart = new Date(Date.now() - this.filledLength);
 		} else {
 			this.filledLength = Date.now() - this.dateStart.getTime();
-			if (this.filledLength >= this.workLength || this.filledLength >= this.restLength) {
+			if ((this.timerStateIsWork && this.filledLength >= this.workLength) ||
+			(!this.timerStateIsWork && this.filledLength >= this.restLength)) {
 				this.timerSwitchState();
 			}
 		}
@@ -51,6 +52,7 @@ var model = {
 		this.timerIsStopped = !this.timerIsStopped;
 		return this.getAllTimerInfo();
 	},
+
 	calculateControls: function(target) {
 		if (this.timerIsStopped) {
 			switch(target) {
