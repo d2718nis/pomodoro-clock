@@ -348,10 +348,12 @@ var controller = {
 				break;
 			case 'w-cont':
 			case 'w-fill':
+			case 'w-bars':
 				var hint = model.calculateHint('w-bars', action);
 				break;
 			case 'r-cont':
 			case 'r-fill':
+			case 'r-bars':
 				var hint = model.calculateHint('r-bars', action);
 				break;
 			default:
