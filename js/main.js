@@ -235,10 +235,10 @@ var controller = {
 	startTimer: function() {
 		var timer = model.timerTick();
 		if (!timer.stopped) {
-			var minutes = this.addStartingZero(Math.floor(Math.round(timer.remain/1000)/60));
-			var seconds = this.addStartingZero(Math.round(Math.round(timer.remain/1000)%60));
+			var minutes = controller.addStartingZero(Math.floor(Math.round(timer.remain/1000)/60));
+			var seconds = controller.addStartingZero(Math.round(Math.round(timer.remain/1000)%60));
 			view.showTimerValue(minutes + ' : ' + seconds);
-			if (this.timerStateIsChanged(timer.stateIsWork)) {
+			if (controller.timerStateIsChanged(timer.stateIsWork)) {
 				if (timer.stateIsWork) {
 					view.spawnNotification('It\'s time to work', 'img/icon.png', 'Good luck!');
 					view.playSound('set-end', 0.2, 4000);
@@ -253,7 +253,7 @@ var controller = {
 	addStartingZero: function(val) {
 		return val > 9 ? val : '0' + val;
 	},
-	timerStateIsChanged(stateIsWork) {
+	timerStateIsChanged: function(stateIsWork) {
 		if (this.currentTimerStateIsWork !== stateIsWork) {
 			this.currentTimerStateIsWork = stateIsWork;
 			return true;
@@ -263,7 +263,7 @@ var controller = {
 	// ========== Onload handler ==========
 	handlerOnload: function() {
 		view.requestNotificationPermission();
-		setInterval(function() { controller.startTimer(); }, 1000);
+		setInterval(this.startTimer, 1000);
 	},
 	// ========== Click handlers ==========
 	handleClick: function(target) {
