@@ -1,0 +1,134 @@
+body {
+	font-family: 'Roboto', sans-serif;
+	background-image: linear-gradient(90deg, rgb(59, 206, 172), rgb(14, 173, 105));
+	box-sizing: border-box;
+	margin: 0;
+}
+
+.app-title {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-family: 'Righteous', cursive;
+	font-weight: normal;
+	text-align: center;
+	font-size: 40px;
+	color: #eee;
+	cursor: default;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.hint {
+	width: 300px;
+	margin: auto;
+	text-align: center;
+	font-size: 24px;
+	color: #555;
+	min-height: 28px;
+	transition: opacity 0.2s ease-in-out;
+	opacity: 0;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.pomodoro-svg {
+	display: block;
+	margin: auto;
+	margin-top: -10px;
+	width: 320px;
+	height: 320px;
+}
+@media (min-width: 350px) {
+	.pomodoro-svg {
+		width: 350px;
+		height: 350px;
+	}
+}
+.pomodoro-clock {
+	fill: #540d6e;
+	filter: url(#outer-shadow-2);
+	cursor: pointer;
+	transition: fill 0.2s ease;
+}
+
+.timer {
+	font-size: 50px;
+	max-width: 120px;
+	position: absolute;
+	width: 100%;
+	margin: auto;
+	z-index: 100;
+	top: 180px;
+	text-align: center;
+	color: #eee;
+	cursor: pointer;
+	fill: #eee;
+	font-family: 'Roboto', monospace;
+	text-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.w-cont,
+.r-cont {
+	filter: url(#outer-shadow-1);
+	cursor: pointer;
+	transition: fill 0.2s ease;
+}
+.w-cont {
+	fill: #ee4266;
+}
+.r-cont {
+	fill: #ffd23f;
+}
+.w-bars:hover .w-cont{
+	fill: #ff6084;
+}
+.r-bars:hover .r-cont{
+	fill: #fff05d;
+}
+.w-fill,
+.r-fill {
+	fill: #540d6e;
+	filter: url(#inner-shadow);
+	cursor: pointer;
+	transition: fill 0.2s ease;
+}
+
+
+.controls {
+	width: 300px;
+	margin: auto;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 30px;
+	color: #eee;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.work-controls {
+	display: none;
+}
+.rest-controls {
+	display: none;
+}
+
+.credits {
+	margin-top: auto;
+	padding-bottom: 10px;
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+}
+
+.credits-link {
+	color: #fff;
+	text-decoration: none;
+	-moz-transition: color 0.2s;
+	-o-transition: color 0.2s;
+	-webkit-transition: color 0.2s;
+	transition: color 0.2s;
+}
+
+.credits-link:hover,
+.credits-link:active,
+.credits-link:focus {
+	color: #333;
+	text-decoration: none;
+}
