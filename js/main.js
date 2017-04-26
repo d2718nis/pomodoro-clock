@@ -1,10 +1,8 @@
 var model = {
 	workControlsDisplay: 'none',
 	restControlsDisplay: 'none',
-
 	hintText: '',
 	hintOpacity: 0,
-
 	dateStart: new Date(),
 	workLength: 25 * 60 * 1000,
 	restLength: 5 * 60 * 1000,
@@ -17,8 +15,7 @@ var model = {
 			this.dateStart = new Date(Date.now() - this.filledLength);
 		} else {
 			this.filledLength = Date.now() - this.dateStart.getTime();
-			if ((this.timerStateIsWork && this.filledLength >= this.workLength) ||
-			(!this.timerStateIsWork && this.filledLength >= this.restLength)) {
+			if (this.filledLength >= this.workLength || this.filledLength >= this.restLength) {
 				this.timerSwitchState();
 			}
 		}
@@ -54,7 +51,6 @@ var model = {
 		this.timerIsStopped = !this.timerIsStopped;
 		return this.getAllTimerInfo();
 	},
-
 	calculateControls: function(target) {
 		if (this.timerIsStopped) {
 			switch(target) {
@@ -72,8 +68,8 @@ var model = {
 			}
 		}
 		return {
-			wDisplay: this.workControlsDisplay,
-			rDisplay: this.restControlsDisplay
+			workDisplay: this.workControlsDisplay,
+			restDisplay: this.restControlsDisplay
 		};
 	},
 	calculateHint: function(target, action) {
@@ -82,26 +78,26 @@ var model = {
 		} else if (action === 'mouseenter') {
 			switch(target) {
 				case 'w-bars':
-					if (!this.timerIsStopped) {
+					if (this.timerIsStopped) {
+						this.hintText = 'Adjust work time';
+					} else {
 						if (this.timerStateIsWork) {
 							this.hintText = 'Restart work set';
 						} else {
 							this.hintText = 'Fast forward to work';
 						}
-					} else {
-						this.hintText = 'Adjust work time';
 					}
 					this.hintOpacity = 1;
 					break;
 				case 'r-bars':
-					if (!this.timerIsStopped) {
+					if (this.timerIsStopped) {
+						this.hintText = 'Adjust rest time';
+					} else {
 						if (this.timerStateIsWork) {
 							this.hintText = 'Fast forward to rest';
 						} else {
 							this.hintText = 'Restart rest set';
 						}
-					} else {
-						this.hintText = 'Adjust rest time';
 					}
 					this.hintOpacity = 1;
 					break;
@@ -165,23 +161,19 @@ var view = {
 	},
 	animateSound: function(audio, prefDuration) {
 		var realDuration = prefDuration <= audio.duration*1000 ? prefDuration : audio.duration*1000;
-		var decreaseBy = audio.volume / Math.floor(realDuration / 100);
+		var decreaseBy = audio.volume / Math.floor(realDuration/100);
 		var animateInterval = setInterval(function() {
 			if (audio.volume === 0) {
-				clearInterval(animateInterval);
 				audio.pause();
 				audio.currentTime = 0;
+				clearInterval(animateInterval);
 			} else {
-				if (audio.volume >= decreaseBy) {
-					audio.volume -= decreaseBy;
-				} else {
-					audio.volume = 0;
-				}
+				audio.volume = audio.volume >= decreaseBy ? audio.volume - decreaseBy : 0;
 			}
 		}, 100);
 	},
 	requestNotificationPermission: function() {
-		if ("Notification" in window) {
+		if ('Notification' in window) {
 			if (Notification.permission !== 'granted') {
 				Notification.requestPermission().then(function(result) {
 					this.notificationPermissionGranted = true;
@@ -201,7 +193,7 @@ var view = {
 		var bigRadius = 150;
 		var smallRadius = 130;
 		var borderWidth = 2;
-		var shift = 10 * 1000;
+		var shift = 10*1000;
 		document.getElementById('w-cont').setAttribute('d', this.calculateArc(this.timeToAngle(wStart),
 			this.timeToAngle(wStart + wLength), smallRadius, bigRadius, wLength));
 		document.getElementById('w-fill').setAttribute('d', this.calculateArc(this.timeToAngle(wStart+shift),
@@ -274,9 +266,8 @@ var controller = {
 			case 'pomodoro-clock':
 			case 'timer':
 				var controls = model.calculateControls('');
-				view.showControls(controls.wDisplay, controls.rDisplay);
-				var timer = model.timerToggle();
-				if (!timer.stopped) {
+				view.showControls(controls.workDisplay, controls.restDisplay);
+				if (!model.timerToggle().stopped) {
 					view.playSound('timer-start', 0.1, 4000);
 				} else {
 					view.showTimerValue('Continue');
@@ -288,7 +279,7 @@ var controller = {
 			case 'w-cont':
 			case 'w-fill':
 				var controls = model.calculateControls('w-bars');
-				view.showControls(controls.wDisplay, controls.rDisplay);
+				view.showControls(controls.workDisplay, controls.restDisplay);
 				var timer = model.getAllTimerInfo();
 				if (!timer.stopped) {
 					if (timer.stateIsWork) {
@@ -306,7 +297,7 @@ var controller = {
 			case 'r-cont':
 			case 'r-fill':
 				var controls = model.calculateControls('r-bars');
-				view.showControls(controls.wDisplay, controls.rDisplay);
+				view.showControls(controls.workDisplay, controls.restDisplay);
 				var timer = model.getAllTimerInfo();
 				if (!timer.stopped) {
 					if (timer.stateIsWork) {
@@ -326,7 +317,7 @@ var controller = {
 				break;
 			default:
 				var controls = model.calculateControls('');
-				view.showControls(controls.wDisplay, controls.rDisplay);
+				view.showControls(controls.workDisplay, controls.restDisplay);
 		}
 	},
 	// ========== Hover handlers ==========
@@ -351,7 +342,7 @@ var controller = {
 	},
 	// ========== Drag range handler ==========
 	handleRangesDrag: function(wVal, rVal) {
-		var timer = model.setSetsLength(wVal * 60 * 1000, rVal * 60 * 1000);
+		var timer = model.setSetsLength(wVal*60*1000, rVal*60*1000);
 		view.showSetsTime(Math.round(timer.wLength/60/1000), Math.round(timer.rLength/60/1000));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
