@@ -252,7 +252,7 @@ var controller = {
 					view.playSound('set-end', 0.2, 4000);
 				} else if (timer.state === 'rest') {
 					view.spawnNotification('It\'s time to rest', 'img/icon.png', 'Good job!');
-					view.playSound('set-end', 0.2, 2000);
+					view.playSound('set-end', 0.2, 4000);
 				}
 				this.recreateInterval();
 			}
