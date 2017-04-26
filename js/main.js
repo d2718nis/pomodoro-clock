@@ -256,10 +256,6 @@ var controller = {
 				}
 				this.recreateInterval();
 			}
-		} else {
-			if (timer.wFilled + timer.rFilled !== 0) {
-				view.showTimerValue('Continue');
-			}
 		}
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled > timer.wLength ? timer.wLength : timer.wFilled,
 			timer.rStart, timer.rLength, timer.rFilled > timer.rLength ? timer.rLength : timer.rFilled);
@@ -292,6 +288,9 @@ var controller = {
 				var timer = model.timerToggle();
 				if (!timer.stopped) {
 					view.playSound('timer-start', 0.1, 4000);
+				} else {
+					view.showTimerValue('Continue');
+					view.playSound('timer-pause', 0.4, 1200);
 				}
 				this.recreateInterval();
 				var hint = model.calculateHint('timer', '');
@@ -307,11 +306,11 @@ var controller = {
 						// Fast forward to work
 						model.timerSwitchState();
 						this.currentTimerState = model.getAllTimerInfo().state;
-						view.playSound('door-open-close', 0.1, 4000);
+						view.playSound('set-restart', 0.4, 4000);
 					} else {
 						// Restart current set
 						model.timerClearSet();
-						view.playSound('door-open-close', 0.1, 4000);
+						view.playSound('set-restart', 0.4, 4000);
 					}
 				}
 				break;
@@ -325,11 +324,11 @@ var controller = {
 						// Fast forward to rest
 						model.timerSwitchState();
 						this.currentTimerState = model.getAllTimerInfo().state;
-						view.playSound('door-open-close', 0.1, 4000);
+						view.playSound('set-restart', 0.4, 4000);
 					} else {
 						// Restart current set
 						model.timerClearSet();
-						view.playSound('door-open-close', 0.1, 4000);
+						view.playSound('set-restart', 0.4, 4000);
 					}
 				}
 				break;
