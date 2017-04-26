@@ -231,15 +231,7 @@ var view = {
 
 
 var controller = {
-	currentInterval: null,
-	intervalDelay: 1000,
 	currentTimerState: 'work',
-	recreateInterval: function() {
-		clearInterval(this.currentInterval);
-		this.currentInterval = setInterval(function() {
-			controller.startTimer();
-		}, this.intervalDelay);
-	},
 	startTimer: function() {
 		var timer = model.timerTick();
 		if (!timer.stopped) {
@@ -254,7 +246,6 @@ var controller = {
 					view.spawnNotification('It\'s time to rest', 'img/icon.png', 'Good job!');
 					view.playSound('set-end', 0.2, 4000);
 				}
-				this.recreateInterval();
 			}
 		}
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled > timer.wLength ? timer.wLength : timer.wFilled,
@@ -273,7 +264,7 @@ var controller = {
 	// ========== Onload handler ==========
 	handlerOnload: function() {
 		view.requestNotificationPermission();
-		this.recreateInterval();
+		setInterval(function() { controller.startTimer(); }, 1000);
 	},
 	// ========== Click handlers ==========
 	handleClick: function(target) {
@@ -292,7 +283,6 @@ var controller = {
 					view.showTimerValue('Continue');
 					view.playSound('timer-pause', 0.4, 1200);
 				}
-				this.recreateInterval();
 				var hint = model.calculateHint('timer', '');
 				view.showHint(hint.text, hint.opacity);
 				break;
