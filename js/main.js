@@ -35,7 +35,7 @@ var model = {
 	getAllTimerInfo: function() {
 		return {
 			stopped: this.timerIsStopped,
-			state: this.timerStateIsWork ? 'work' : 'rest',
+			stateIsWork: this.timerStateIsWork,
 			remain: this.timerStateIsWork ? (this.workLength - this.filledLength) : (this.restLength - this.filledLength),
 			wStart: this.timerStateIsWork ? this.dateStart.getTime() : (this.dateStart.getTime() + this.restLength),
 			wFilled: this.timerStateIsWork ? (this.filledLength > this.workLength ? this.workLength : this.filledLength) : 0,
@@ -231,18 +231,18 @@ var view = {
 
 
 var controller = {
-	currentTimerState: 'work',
+	currentTimerStateIsWork: true,
 	startTimer: function() {
 		var timer = model.timerTick();
 		if (!timer.stopped) {
 			var minutes = this.addStartingZero(Math.floor(Math.round(timer.remain/1000)/60));
 			var seconds = this.addStartingZero(Math.round(Math.round(timer.remain/1000)%60));
 			view.showTimerValue(minutes + ' : ' + seconds);
-			if (this.timerStateIsChanged(timer.state)) {
-				if (timer.state === 'work') {
+			if (this.timerStateIsChanged(timer.stateIsWork)) {
+				if (timer.stateIsWork) {
 					view.spawnNotification('It\'s time to work', 'img/icon.png', 'Good luck!');
 					view.playSound('set-end', 0.2, 4000);
-				} else if (timer.state === 'rest') {
+				} else {
 					view.spawnNotification('It\'s time to rest', 'img/icon.png', 'Good job!');
 					view.playSound('set-end', 0.2, 4000);
 				}
@@ -254,8 +254,8 @@ var controller = {
 		return val > 9 ? val : '0' + val;
 	},
 	timerStateIsChanged(stateIsWork) {
-		if (this.currentTimerState !== stateIsWork) {
-			this.currentTimerState = stateIsWork;
+		if (this.currentTimerStateIsWork !== stateIsWork) {
+			this.currentTimerStateIsWork = stateIsWork;
 			return true;
 		}
 		return false;
@@ -291,14 +291,14 @@ var controller = {
 				view.showControls(controls.wDisplay, controls.rDisplay);
 				var timer = model.getAllTimerInfo();
 				if (!timer.stopped) {
-					if (timer.state === 'rest') {
-						// Fast forward to work
-						model.timerSwitchState();
-						this.currentTimerState = model.getAllTimerInfo().state;
-						view.playSound('set-restart', 0.4, 4000);
-					} else {
+					if (timer.stateIsWork) {
 						// Restart current set
 						model.timerClearSet();
+						view.playSound('set-restart', 0.4, 4000);
+					} else {
+						// Fast forward to work
+						model.timerSwitchState();
+						this.currentTimerStateIsWork = model.getAllTimerInfo().stateIsWork;
 						view.playSound('set-restart', 0.4, 4000);
 					}
 				}
@@ -309,10 +309,10 @@ var controller = {
 				view.showControls(controls.wDisplay, controls.rDisplay);
 				var timer = model.getAllTimerInfo();
 				if (!timer.stopped) {
-					if (timer.state === 'work') {
+					if (timer.stateIsWork) {
 						// Fast forward to rest
 						model.timerSwitchState();
-						this.currentTimerState = model.getAllTimerInfo().state;
+						this.currentTimerStateIsWork = model.getAllTimerInfo().stateIsWork;
 						view.playSound('set-restart', 0.4, 4000);
 					} else {
 						// Restart current set
