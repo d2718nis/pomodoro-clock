@@ -256,6 +256,8 @@ var controller = {
 	},
 	// ========== Onload handler ==========
 	handlerOnload: function() {
+		var timer = model.timerTick();
+		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 		view.requestNotificationPermission();
 		setInterval(this.startTimer, 1000);
 	},
