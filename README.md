@@ -47,3 +47,5 @@ Acknowledgments
   color schemes generator
 * [MDN tutorial](https://developer.mozilla.org/en/docs/Web/SVG/Tutorial/Paths) &#8212; Mozilla Developer
   Network SVG Paths tutorial
+* [Wikipedia: Pomodoro Technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) &#8212; a time
+  management method developed by Francesco Cirillo in the late 1980s
