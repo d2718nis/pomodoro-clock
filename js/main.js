@@ -276,7 +276,7 @@ var controller = {
 				}
 			}
 		}
-		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.floor(Math.round(timer.remain/1000)/60));
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.ceil(Math.round(timer.remain/1000)/60));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 	addStartingZero: function(val) {
@@ -292,7 +292,7 @@ var controller = {
 	// ========== Onload handler ==========
 	handlerOnload: function() {
 		var timer = model.timerTick();
-		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, 25);
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.ceil(Math.round(timer.remain/1000)/60));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 		view.requestNotificationPermission();
 		setInterval(this.startTimer, 1000);
@@ -384,7 +384,7 @@ var controller = {
 	handleRangesDrag: function(wVal, rVal) {
 		var timer = model.setSetsLength(wVal*60*1000, rVal*60*1000);
 		view.showSetsTime(Math.round(timer.wLength/60/1000), Math.round(timer.rLength/60/1000));
-		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.floor(Math.round(timer.remain/1000)/60));
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.ceil(Math.round(timer.remain/1000)/60));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 };
