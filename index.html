@@ -12,106 +12,113 @@
 		<link href="https://fonts.googleapis.com/css?family=Roboto:100|Righteous" rel="stylesheet">
 	</head>
 	<body>
-		<h1 id="app-title" class="app-title">Pomodoro</h1>
-		<div id="hint" class="hint"></div>
+		<div class="container">
 
-		<svg class="pomodoro-svg" viewBox="0 0 350 350">
-			<g transform="translate(175, 175)">
-				<circle id="pomodoro-clock" class="pomodoro-clock" cx="0" cy="0" r="150"/>
-				<text id="timer" class="timer" text-anchor="middle" y="15">Start</text>
-				<g id="w-bars" class="w-bars">
-					<path id="w-cont" class="w-cont" d=""/>
-					<path id="w-fill" class="w-fill" d=""/>
-				</g>
-				<g id="r-bars" class="r-bars">
-					<path id="r-cont" class="r-cont" d=""/>
-					<path id="r-fill" class="r-fill" d=""/>
-				</g>
-			</g>
-			<filter id="outer-shadow-1" height="130%" width="130%">
-				<feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-				<feOffset dx="0" dy="1" result="offsetblur"/>
-				<feComponentTransfer result="shadow1">
-					<feFuncA type="linear" slope="0.12"></feFuncA>
-				</feComponentTransfer>
-				<feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-				<feOffset dx="0" dy="1" result="offsetblur"/>
-				<feComponentTransfer result="shadow2">
-					<feFuncA type="linear" slope="0.24"></feFuncA>
-				</feComponentTransfer>
-				<feMerge>
-					<feMergeNode in="shadow1"/>
-					<feMergeNode in="shadow2"/>
-					<feMergeNode in="SourceGraphic"/>
-				</feMerge>
-			</filter>
-			<filter id="outer-shadow-2" height="130%" width="130%">
-				<feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
-				<feOffset dx="0" dy="3" result="offsetblur"/>
-				<feComponentTransfer result="shadow1">
-					<feFuncA type="linear" slope="0.16"></feFuncA>
-				</feComponentTransfer>
-				<feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
-				<feOffset dx="0" dy="3" result="offsetblur"/>
-				<feComponentTransfer result="shadow2">
-					<feFuncA type="linear" slope="0.23"></feFuncA>
-				</feComponentTransfer>
-				<feMerge>
-					<feMergeNode in="shadow1"/>
-					<feMergeNode in="shadow2"/>
-					<feMergeNode in="SourceGraphic"/>
-				</feMerge>
-			</filter>
-			<filter id="inner-shadow" height="130%" width="130%">
-				<feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"></feGaussianBlur>
-				<feOffset dy="1" dx="0"></feOffset>
-				<feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
-				<feComponentTransfer>
-					<feFuncA type="linear" slope="0.4"></feFuncA>
-				</feComponentTransfer>
-				<feComposite in2="shadowDiff" operator="in"></feComposite>
-				<feComposite in2="SourceGraphic" operator="over" result="firstfilter"></feComposite>
-				<feGaussianBlur in="firstfilter" stdDeviation="3" result="blur2"></feGaussianBlur>
-				<feOffset dy="1" dx="0"></feOffset>
-				<feComposite in2="firstfilter" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
-				<feComponentTransfer>
-					<feFuncA type="linear" slope="0.8"></feFuncA>
-				</feComponentTransfer>
-				<feComposite in2="shadowDiff" operator="in"></feComposite>
-				<feComposite in2="firstfilter" operator="over"></feComposite>
-			</filter>
-		</svg>
-
-		<div class="controls">
-			<div id="work-controls" class="work-controls">
-				Work: <span id="work-sets-value" class="workSettings">25</span> minutes
-				<br>
-				<input id="work-range" type="range" min="5" max="45" step="1" value="25">
+			<div class="header">
+				<h1 id="app-title" class="app-title">Pomodoro</h1>
+				<div id="hint" class="hint"></div>
 			</div>
-			<div id="rest-controls" class="rest-controls">
-				Rest: <span id="rest-sets-value" class="restSettings">5</span> minutes
-				<br>
-				<input id="rest-range" type="range" min="1" max="15" step="1" value="5">
+
+			<div class="body">
+				<svg class="pomodoro-svg" viewBox="0 0 350 350">
+					<g transform="translate(175, 175)">
+						<circle id="pomodoro-clock" class="pomodoro-clock" cx="0" cy="0" r="150"/>
+						<text id="timer" class="timer" text-anchor="middle" y="15">Start</text>
+						<g id="w-bars" class="w-bars">
+							<path id="w-cont" class="w-cont" d=""/>
+							<path id="w-fill" class="w-fill" d=""/>
+						</g>
+						<g id="r-bars" class="r-bars">
+							<path id="r-cont" class="r-cont" d=""/>
+							<path id="r-fill" class="r-fill" d=""/>
+						</g>
+					</g>
+					<filter id="outer-shadow-1" height="130%" width="130%">
+						<feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+						<feOffset dx="0" dy="1" result="offsetblur"/>
+						<feComponentTransfer result="shadow1">
+							<feFuncA type="linear" slope="0.12"></feFuncA>
+						</feComponentTransfer>
+						<feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+						<feOffset dx="0" dy="1" result="offsetblur"/>
+						<feComponentTransfer result="shadow2">
+							<feFuncA type="linear" slope="0.24"></feFuncA>
+						</feComponentTransfer>
+						<feMerge>
+							<feMergeNode in="shadow1"/>
+							<feMergeNode in="shadow2"/>
+							<feMergeNode in="SourceGraphic"/>
+						</feMerge>
+					</filter>
+					<filter id="outer-shadow-2" height="130%" width="130%">
+						<feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+						<feOffset dx="0" dy="3" result="offsetblur"/>
+						<feComponentTransfer result="shadow1">
+							<feFuncA type="linear" slope="0.16"></feFuncA>
+						</feComponentTransfer>
+						<feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+						<feOffset dx="0" dy="3" result="offsetblur"/>
+						<feComponentTransfer result="shadow2">
+							<feFuncA type="linear" slope="0.23"></feFuncA>
+						</feComponentTransfer>
+						<feMerge>
+							<feMergeNode in="shadow1"/>
+							<feMergeNode in="shadow2"/>
+							<feMergeNode in="SourceGraphic"/>
+						</feMerge>
+					</filter>
+					<filter id="inner-shadow" height="130%" width="130%">
+						<feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"></feGaussianBlur>
+						<feOffset dy="1" dx="0"></feOffset>
+						<feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
+						<feComponentTransfer>
+							<feFuncA type="linear" slope="0.4"></feFuncA>
+						</feComponentTransfer>
+						<feComposite in2="shadowDiff" operator="in"></feComposite>
+						<feComposite in2="SourceGraphic" operator="over" result="firstfilter"></feComposite>
+						<feGaussianBlur in="firstfilter" stdDeviation="3" result="blur2"></feGaussianBlur>
+						<feOffset dy="1" dx="0"></feOffset>
+						<feComposite in2="firstfilter" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
+						<feComponentTransfer>
+							<feFuncA type="linear" slope="0.8"></feFuncA>
+						</feComponentTransfer>
+						<feComposite in2="shadowDiff" operator="in"></feComposite>
+						<feComposite in2="firstfilter" operator="over"></feComposite>
+					</filter>
+				</svg>
+
+				<div class="controls">
+					<div id="work-controls" class="work-controls">
+						Work: <span id="work-sets-value" class="workSettings">25</span> minutes
+						<br>
+						<input id="work-range" type="range" min="5" max="45" step="1" value="25">
+					</div>
+					<div id="rest-controls" class="rest-controls">
+						Rest: <span id="rest-sets-value" class="restSettings">5</span> minutes
+						<br>
+						<input id="rest-range" type="range" min="1" max="15" step="1" value="5">
+					</div>
+				</div>
+
+				<audio id="timer-start">
+					<source src="media/microwave-start-with-beep.mp3" type="audio/mp3" />
+				</audio>
+				<audio id="set-restart">
+					<source src="media/microwave-door-open-close.mp3" type="audio/mp3" />
+				</audio>
+				<audio id="timer-pause">
+					<source src="media/microwave-door-open.mp3" type="audio/mp3" />
+				</audio>
+				<audio id="set-end">
+					<source src="media/microwave-ready.mp3" type="audio/mp3" />
+				</audio>
 			</div>
+
+			<div class="footer credits">
+				<a class="credits-link" href="https://d2718nis.github.io" target="_blank">April 2017 by Denis Z.</a>
+			</div>
+
 		</div>
-
-		<audio id="timer-start">
-			<source src="media/microwave-start-with-beep.mp3" type="audio/mp3" />
-		</audio>
-		<audio id="set-restart">
-			<source src="media/microwave-door-open-close.mp3" type="audio/mp3" />
-		</audio>
-		<audio id="timer-pause">
-			<source src="media/microwave-door-open.mp3" type="audio/mp3" />
-		</audio>
-		<audio id="set-end">
-			<source src="media/microwave-ready.mp3" type="audio/mp3" />
-		</audio>
-
-		<div class="credits">
-			<a class="credits-link" href="https://d2718nis.github.io" target="_blank">April 2017 by Denis Z.</a>
-		</div>
-
 		<script src="js/main.js"></script>
 	</body>
 </html>
