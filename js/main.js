@@ -40,7 +40,9 @@ var model = {
 			wLength: this.workLength,
 			rStart: this.timerStateIsWork ? (this.dateStart.getTime() + this.workLength) : this.dateStart.getTime(),
 			rFilled: this.timerStateIsWork ? 0 : (this.filledLength > this.restLength ? this.restLength : this.filledLength),
-			rLength: this.restLength
+			rLength: this.restLength,
+			faviconCircleColor: this.calculateFaviconColors().circleColor,
+			faviconTextColor: this.calculateFaviconColors().textColor
 		};
 	},
 	setSetsLength: function(wSetsSeconds, rSetsSeconds) {
@@ -125,6 +127,19 @@ var model = {
 			opacity: this.hintOpacity
 		};
 	},
+	calculateFaviconColors: function() {
+		if (this.timerStateIsWork) {
+			return {
+				circleColor: this.timerIsStopped ? '#540d6e' : '#ee4266',
+				textColor: this.timerIsStopped ? '#ee4266' : '#fff'
+			};
+		} else {
+			return {
+				circleColor: this.timerIsStopped ? '#540d6e' : '#ffd23f',
+				textColor: this.timerIsStopped ? '#ffd23f' : '#555'
+			};
+		}
+	}
 };
 
 
@@ -207,6 +222,25 @@ var view = {
 			this.timeToAngle(rStart + +((rLength-2*shift)/rLength)*rFilled+shift),
 			smallRadius+borderWidth, bigRadius-borderWidth, ((rLength-2*shift)/rLength)*rFilled));
 	},
+	drawFavicon: function(circleColor, textColor, minutes) {
+		var canvas = document.createElement('canvas');
+		canvas.width = 16;
+		canvas.height = 16;
+		var ctx = canvas.getContext('2d');
+		// Circle
+		ctx.beginPath();
+		ctx.arc(canvas.width/2, canvas.height/2, canvas.height/2, 0, 2*Math.PI);
+		ctx.fillStyle = circleColor;
+		ctx.fill();
+		// Text
+		ctx.font = 'Roboto';
+		ctx.fillStyle = textColor;
+		ctx.textAlign = 'center';
+		ctx.fillText(minutes, canvas.width/2, canvas.height/2+4);
+		// Draw favicons
+		document.getElementsByTagName('head')[0].querySelector('[rel="icon"]').href = canvas.toDataURL("image/x-icon");
+		document.getElementsByTagName('head')[0].querySelector('[rel="shortcut icon"]').href = canvas.toDataURL("image/x-icon");
+	},
 	calculateArc: function(a1, a2, smallRadius, bigRadius, functionTime) {
 		return 'M' + (Math.cos(a1)*smallRadius) + ' ' + (Math.sin(a1)*smallRadius) + ' ' +
 			(Math.cos(a1)*bigRadius) + ' ' + (Math.sin(a1)*bigRadius) +
@@ -242,6 +276,7 @@ var controller = {
 				}
 			}
 		}
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.floor(Math.round(timer.remain/1000)/60));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 	addStartingZero: function(val) {
@@ -257,6 +292,7 @@ var controller = {
 	// ========== Onload handler ==========
 	handlerOnload: function() {
 		var timer = model.timerTick();
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, 25);
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 		view.requestNotificationPermission();
 		setInterval(this.startTimer, 1000);
@@ -348,6 +384,7 @@ var controller = {
 	handleRangesDrag: function(wVal, rVal) {
 		var timer = model.setSetsLength(wVal*60*1000, rVal*60*1000);
 		view.showSetsTime(Math.round(timer.wLength/60/1000), Math.round(timer.rLength/60/1000));
+		view.drawFavicon(timer.faviconCircleColor, timer.faviconTextColor, Math.floor(Math.round(timer.remain/1000)/60));
 		view.drawSvg(timer.wStart, timer.wLength, timer.wFilled, timer.rStart, timer.rLength, timer.rFilled);
 	},
 };
