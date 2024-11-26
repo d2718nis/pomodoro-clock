@@ -108,13 +108,13 @@ var model = {
 				case 'pomodoro-clock':
 				case 'timer':
 					if (this.timerIsStopped && this.timerStateIsWork && this.filledLength === 0) {
-						this.hintText = 'Start timer';
+						this.hintText = '<kbd>Space</kbd> Start timer';
 					} else if (this.timerIsStopped && this.timerStateIsWork) {
 						this.hintText = 'Continue working';
 					} else if (this.timerIsStopped && !this.timerStateIsWork) {
 						this.hintText = 'Continue resting';
 					} else {
-						this.hintText = 'Pause timer';
+						this.hintText = '<kbd>Space</kbd> Pause timer';
 					}
 					this.hintOpacity = 1;
 					break;
@@ -289,6 +289,18 @@ var controller = {
 		}
 		return false;
 	},
+	toggleTimer: function() {
+		var controls = model.calculateControls('');
+		view.showControls(controls.workDisplay, controls.restDisplay);
+		if (!model.timerToggle().stopped) {
+			view.playSound('timer-start', 0.1, 4000);
+		} else {
+			view.showTimerValue('Continue');
+			view.playSound('timer-pause', 0.4, 1200);
+		}
+		var hint = model.calculateHint('timer', '');
+		view.showHint(hint.text, hint.opacity);
+	},
 	// ========== Onload handler ==========
 	handlerOnload: function() {
 		var timer = model.timerTick();
@@ -305,16 +317,7 @@ var controller = {
 				break;
 			case 'pomodoro-clock':
 			case 'timer':
-				var controls = model.calculateControls('');
-				view.showControls(controls.workDisplay, controls.restDisplay);
-				if (!model.timerToggle().stopped) {
-					view.playSound('timer-start', 0.1, 4000);
-				} else {
-					view.showTimerValue('Continue');
-					view.playSound('timer-pause', 0.4, 1200);
-				}
-				var hint = model.calculateHint('timer', '');
-				view.showHint(hint.text, hint.opacity);
+				this.toggleTimer();
 				break;
 			case 'w-cont':
 			case 'w-fill':
@@ -404,6 +407,12 @@ var controller = {
 			controller.handlerOnload();
 		},
 		event: function() {
+			// Keyboard events
+			document.addEventListener('keyup', function(e) {
+				if (e.code === 'Space') {
+					controller.toggleTimer();
+				}
+			});
 			// Click events
 			document.getElementById('app-title').addEventListener('click', function(e) {
 				controller.handleClick(e.target);
