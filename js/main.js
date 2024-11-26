@@ -110,9 +110,9 @@ var model = {
 					if (this.timerIsStopped && this.timerStateIsWork && this.filledLength === 0) {
 						this.hintText = '<kbd>Space</kbd> Start timer';
 					} else if (this.timerIsStopped && this.timerStateIsWork) {
-						this.hintText = 'Continue working';
+						this.hintText = '<kbd>Space</kbd> Continue working';
 					} else if (this.timerIsStopped && !this.timerStateIsWork) {
-						this.hintText = 'Continue resting';
+						this.hintText = '<kbd>Space</kbd> Continue resting';
 					} else {
 						this.hintText = '<kbd>Space</kbd> Pause timer';
 					}
